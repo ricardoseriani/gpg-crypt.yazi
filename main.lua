@@ -30,7 +30,15 @@ return {
 				-- Check if both key is equals
 				if crypt_key == confirm_crypt_key then
                     for _, v in pairs(selected_or_hovered()) do
-                        os.execute("gpg --symmetric --output " .. tostring(v) .. ".gpg --batch --passphrase " .. crypt_key .. " " .. tostring(v))
+                        if fs.cha(v).is_dir then
+                            -- TODO: Check a way to use <() inside os.execute
+                            local zipped = tostring(v)..".tar"
+                            os.execute("tar -cf " .. zipped .. " " .. tostring(v))
+                            os.execute("gpg --symmetric --output " .. zipped .. ".gpg --batch --passphrase " .. crypt_key .. " " .. zipped)
+                            os.execute("rm " .. zipped)
+                        else
+                            os.execute("gpg --symmetric --output " .. tostring(v) .. ".gpg --batch --passphrase " .. crypt_key .. " " .. tostring(v))
+                        end
                     end
 				end
             end
