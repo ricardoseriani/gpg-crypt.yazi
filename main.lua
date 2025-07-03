@@ -15,14 +15,16 @@ return {
             return
         end
 
+        local input_position = { "top-center", y = 3, w = 40 }
+
         if action == "encrypt" then
             local crypt_key, crypt_key_event = ya.input {
                 title = "GPG crypt key",
-                position = { "top-center", y = 3, w = 40 },
+                position = input_position,
             }
             local confirm_crypt_key, confirm_crypt_key_event = ya.input {
                 title = "Confirm GPG crypt key",
-                position = { "top-center", y = 3, w = 40 },
+                position = input_position,
             }
 
             -- Check if The user has confirmed both inputs
@@ -47,7 +49,7 @@ return {
         if action == "decrypt" then
             local crypt_key, crypt_key_event = ya.input {
                 title = "GPG crypt key",
-                position = { "top-center", y = 3, w = 40 },
+                position = input_position,
             }
 
             -- Check if The user has confirmed input
