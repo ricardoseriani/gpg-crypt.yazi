@@ -34,10 +34,10 @@ return {
                             -- TODO: Check a way to use <() inside os.execute
                             local zipped = tostring(v)..".tar"
                             os.execute("tar -cf " .. zipped .. " " .. tostring(v))
-                            os.execute("gpg --symmetric --output " .. zipped .. ".gpg --batch --passphrase " .. crypt_key .. " " .. zipped)
+                            os.execute("gpg --quiet --symmetric --output " .. zipped .. ".gpg --batch --passphrase " .. crypt_key .. " " .. zipped)
                             os.execute("rm " .. zipped)
                         else
-                            os.execute("gpg --symmetric --output " .. tostring(v) .. ".gpg --batch --passphrase " .. crypt_key .. " " .. tostring(v))
+                            os.execute("gpg --quiet --symmetric --output " .. tostring(v) .. ".gpg --batch --passphrase " .. crypt_key .. " " .. tostring(v))
                         end
                     end
 				end
