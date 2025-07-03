@@ -1,34 +1,34 @@
 local selected_or_hovered = ya.sync(function()
-	local tab, paths = cx.active, {}
-	for _, u in pairs(tab.selected) do
-		paths[#paths + 1] = u
-	end
-	if #paths == 0 and tab.current.hovered then
-		paths[1] = tab.current.hovered.url
-	end
-	return paths
+    local tab, paths = cx.active, {}
+    for _, u in pairs(tab.selected) do
+        paths[#paths + 1] = u
+    end
+    if #paths == 0 and tab.current.hovered then
+        paths[1] = tab.current.hovered.url
+    end
+    return paths
 end)
 
 return {
-	entry = function(_, job)
-		local action = job.args[1] if not action then
-			return
-		end
+    entry = function(_, job)
+        local action = job.args[1] if not action then
+            return
+        end
 
-		if action == "encrypt" then
-			local crypt_key, crypt_key_event = ya.input {
-				title = "GPG crypt key",
-				position = { "top-center", y = 3, w = 40 },
-			}
-			local confirm_crypt_key, confirm_crypt_key_event = ya.input {
-				title = "Confirm GPG crypt key",
-				position = { "top-center", y = 3, w = 40 },
-			}
+        if action == "encrypt" then
+            local crypt_key, crypt_key_event = ya.input {
+                title = "GPG crypt key",
+                position = { "top-center", y = 3, w = 40 },
+            }
+            local confirm_crypt_key, confirm_crypt_key_event = ya.input {
+                title = "Confirm GPG crypt key",
+                position = { "top-center", y = 3, w = 40 },
+            }
 
-			-- Check if The user has confirmed both inputs
-			if crypt_key_event == 1 and confirm_crypt_key_event == 1 then
-				-- Check if both key is equals
-				if crypt_key == confirm_crypt_key then
+            -- Check if The user has confirmed both inputs
+            if crypt_key_event == 1 and confirm_crypt_key_event == 1 then
+                -- Check if both key is equals
+                if crypt_key == confirm_crypt_key then
                     for _, v in pairs(selected_or_hovered()) do
                         if fs.cha(v).is_dir then
                             -- TODO: Check a way to use <() inside os.execute
@@ -40,22 +40,22 @@ return {
                             os.execute("gpg --quiet --symmetric --output " .. tostring(v) .. ".gpg --batch --passphrase " .. crypt_key .. " " .. tostring(v))
                         end
                     end
-				end
+                end
             end
-		end
+        end
 
-		if action == "decrypt" then
-			local crypt_key, crypt_key_event = ya.input {
-				title = "GPG crypt key",
-				position = { "top-center", y = 3, w = 40 },
-			}
+        if action == "decrypt" then
+            local crypt_key, crypt_key_event = ya.input {
+                title = "GPG crypt key",
+                position = { "top-center", y = 3, w = 40 },
+            }
 
-			-- Check if The user has confirmed input
-			if crypt_key_event == 1 then
+            -- Check if The user has confirmed input
+            if crypt_key_event == 1 then
                 for _, v in pairs(selected_or_hovered()) do
                     os.execute("gpg --decrypt --output " .. tostring(v):gsub(".gpg$","") .. " --batch --passphrase " .. crypt_key .. " " .. tostring(v))
                 end
             end
-		end
-	end,
+        end
+    end,
 }
