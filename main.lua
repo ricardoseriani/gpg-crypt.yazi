@@ -20,10 +20,12 @@ return {
         if action == "encrypt" then
             local crypt_key, crypt_key_event = ya.input {
                 title = "GPG crypt key",
+                obscure = true,
                 position = input_position,
             }
             local confirm_crypt_key, confirm_crypt_key_event = ya.input {
                 title = "Confirm GPG crypt key",
+                obscure = true,
                 position = input_position,
             }
 
@@ -54,6 +56,7 @@ return {
         if action == "decrypt" then
             local crypt_key, crypt_key_event = ya.input {
                 title = "GPG crypt key",
+                obscure = true,
                 position = input_position,
             }
 
