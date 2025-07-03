@@ -22,7 +22,7 @@ return {
                 title = "GPG encrypt key",
                 obscure = true,
                 position = input_position,
-            }c
+            }
             local confirm_crypt_key, confirm_crypt_key_event = ya.input {
                 title = "Confirm GPG encrypt key",
                 obscure = true,
@@ -50,6 +50,13 @@ return {
                 else
                     os.execute("gpg --quiet --symmetric --output " .. tostring(v) .. ".gpg --batch --passphrase " .. crypt_key .. " " .. tostring(v))
                 end
+                ya.notify({
+                    title = "GPG Encrypt",
+                    content = "Encryption of file " .. v.name .. " was successfull",
+                    timeout = 3,
+                    level = "info",
+                })
+
             end
         end
 
@@ -68,6 +75,12 @@ return {
             -- Decrypt files/directories
             for _, v in pairs(selected_or_hovered()) do
                 os.execute("gpg --decrypt --output " .. tostring(v):gsub(".gpg$","") .. " --batch --passphrase " .. crypt_key .. " " .. tostring(v))
+                ya.notify({
+                    title = "GPG Decrypt",
+                    content = "Decryption of file " .. v.name .. " was successfull",
+                    timeout = 3,
+                    level = "info",
+                })
             end
         end
     end,
