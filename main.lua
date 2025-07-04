@@ -49,12 +49,12 @@ return {
             for _, v in pairs(selected_or_hovered()) do
                 if fs.cha(v).is_dir then
                     -- TODO: Check a way to use <() inside os.execute
-                    local zipped = tostring(v)..".tar"
-                    os.execute("tar -cf " .. zipped .. " " .. tostring(v))
-                    os.execute("gpg --quiet --symmetric --output " .. zipped .. ".gpg --batch --passphrase " .. crypt_key .. " " .. zipped)
-                    os.execute("rm " .. zipped)
+                    local zipped = string.format("%s.tar", tostring(v))
+                    os.execute(string.format("tar -cf '%s' '%s'",  zipped, tostring(v)))
+                    os.execute(string.format("gpg --quiet --symmetric --output '%s.gpg' --batch --passphrase '%s' '%s'", zipped,  crypt_key, zipped))
+                    os.execute(string.format("rm '%s'", zipped))
                 else
-                    os.execute("gpg --quiet --symmetric --output " .. tostring(v) .. ".gpg --batch --passphrase " .. crypt_key .. " " .. tostring(v))
+                    os.execute(string.format("gpg --quiet --symmetric --output '%s.gpg' --batch --passphrase '%s' '%s'", tostring(v), crypt_key, tostring(v)))
                 end
                 ya.notify({
                     title = "GPG Encrypt",
