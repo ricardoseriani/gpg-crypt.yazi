@@ -80,7 +80,7 @@ return {
 
             -- Decrypt files/directories
             for _, v in pairs(selected_or_hovered()) do
-                os.execute("gpg --quiet --decrypt --output " .. tostring(v):gsub(".gpg$","") .. " --batch --passphrase " .. crypt_key .. " " .. tostring(v))
+                os.execute(string.format("gpg --decrypt --output '%s' --batch --passphrase '%s' '%s'", tostring(v):gsub(".gpg$",""), crypt_key, tostring(v)))
                 ya.notify({
                     title = "GPG Decrypt",
                     content = "Decryption of file " .. v.name .. " was successfull",
