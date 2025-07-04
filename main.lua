@@ -23,14 +23,20 @@ return {
                 obscure = true,
                 position = input_position,
             }
+
+            -- Check if The user has confirmed input
+            if crypt_key_event ~= 1 then
+                return
+            end
+
             local confirm_crypt_key, confirm_crypt_key_event = ya.input {
                 title = "Confirm GPG encrypt key",
                 obscure = true,
                 position = input_position,
             }
 
-            -- Check if The user has confirmed both inputs
-            if crypt_key_event ~= 1 or confirm_crypt_key_event ~= 1 then
+            -- Check if The user has confirmed input
+            if confirm_crypt_key_event ~= 1 then
                 return
             end
 
