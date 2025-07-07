@@ -48,11 +48,7 @@ return {
             -- Encrypt files/directories
             for _, v in pairs(selected_or_hovered()) do
                 if fs.cha(v).is_dir then
-                    -- TODO: Check a way to use <() inside os.execute
-                    local zipped = string.format("%s.tar", tostring(v))
-                    os.execute(string.format("tar -cf '%s' '%s'",  zipped, tostring(v)))
-                    os.execute(string.format("gpg --quiet --symmetric --output '%s.gpg' --batch --passphrase '%s' '%s'", zipped,  crypt_key, zipped))
-                    os.execute(string.format("rm '%s'", zipped))
+                    os.execute(string.format([[bash -c 'cd '%s' && gpg --quiet --symmetric --output "%s.tar.gz.gpg" --batch --passphrase "%s" <(tar -cz "%s")']], v.parent, v.name,  crypt_key, v.name))
                 else
                     os.execute(string.format("gpg --quiet --symmetric --output '%s.gpg' --batch --passphrase '%s' '%s'", tostring(v), crypt_key, tostring(v)))
                 end
