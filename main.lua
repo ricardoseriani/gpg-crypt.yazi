@@ -47,18 +47,20 @@ return {
 
             -- Encrypt files/directories
             for _, v in pairs(selected_or_hovered()) do
+                local cmd = ""
                 if fs.cha(v).is_dir then
-                    os.execute(string.format([[bash -c 'cd '%s' && gpg --quiet --symmetric --output "%s.tar.gz.gpg" --batch --passphrase "%s" <(tar -cz "%s")']], v.parent, v.name,  crypt_key, v.name))
+                    cmd = string.format([[bash -c 'cd '%s' && gpg --quiet --symmetric --output "%s.tar.gz.gpg" --batch --passphrase "%s" <(tar -cz "%s")']], v.parent, v.name, crypt_key, v.name)
                 else
-                    os.execute(string.format("gpg --quiet --symmetric --output '%s.gpg' --batch --passphrase '%s' '%s'", tostring(v), crypt_key, tostring(v)))
+                    cmd = string.format("gpg --quiet --symmetric --output '%s.gpg' --batch --passphrase '%s' '%s'", tostring(v), crypt_key, tostring(v))
                 end
+                os.execute(cmd)
+
                 ya.notify({
                     title = "GPG Encrypt",
                     content = "Encryption of file " .. v.name .. " was successfull",
                     timeout = 3,
                     level = "info",
                 })
-
             end
         end
 
@@ -76,7 +78,8 @@ return {
 
             -- Decrypt files/directories
             for _, v in pairs(selected_or_hovered()) do
-                os.execute(string.format("gpg --quiet --decrypt --output '%s' --batch --passphrase '%s' '%s'", tostring(v):gsub(".gpg$",""), crypt_key, tostring(v)))
+                local cmd = string.format("gpg --quiet --decrypt --output '%s' --batch --passphrase '%s' '%s'", tostring(v):gsub(".gpg$", ""), crypt_key, tostring(v))
+                os.execute(cmd)
                 ya.notify({
                     title = "GPG Decrypt",
                     content = "Decryption of file " .. v.name .. " was successfull",
