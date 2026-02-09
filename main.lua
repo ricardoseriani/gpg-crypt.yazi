@@ -21,7 +21,7 @@ return {
             local crypt_key, crypt_key_event = ya.input {
                 title = "GPG encrypt key",
                 obscure = true,
-                position = input_position,
+                pos = input_position,
             }
 
             -- Check if The user has confirmed input
@@ -32,7 +32,7 @@ return {
             local confirm_crypt_key, confirm_crypt_key_event = ya.input {
                 title = "Confirm GPG encrypt key",
                 obscure = true,
-                position = input_position,
+                pos = input_position,
             }
 
             -- Check if The user has confirmed input
@@ -68,7 +68,7 @@ return {
             local crypt_key, crypt_key_event = ya.input {
                 title = "GPG decrypt key",
                 obscure = true,
-                position = input_position,
+                pos = input_position,
             }
 
             -- Check if The user has confirmed input
